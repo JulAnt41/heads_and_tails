@@ -20,5 +20,38 @@ bot.command('help', (ctx) => {
     'Надеюсь, это поможет вам насладиться игрой. Удачи! 🎲');
 });
 
+bot.command('play', (ctx) => {
+    const keyboard = new InlineKeyboard()
+        .text('Орел', 'heads')
+        .row()
+        .text('Решка', 'tails');
+
+    ctx.reply('Сделайте ставку: ', { reply_markup: keyboard });
+});
+
+bot.callbackQuery('heads', (ctx) => {
+    const keyboard = new InlineKeyboard()
+    .text('Да', 'play')
+    .row()
+    .text('Нет', 'no');
+
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+    const resultText = result === 'heads' ? 'Орел! Вы победили!' : 'Решка... Вы проиграли.';
+
+    ctx.reply('Хотите сыграть еще раз?', { reply_markup: keyboard });
+});
+
+bot.callbackQuery('tails', (ctx) => {
+    const keyboard = new InlineKeyboard()
+    .text('Да', 'play')
+    .row()
+    .text('Нет', 'no');
+
+    const result = Math.random() < 0.5 ? 'heads' : 'tails';
+    const resultText = result === 'tails' ? 'Решка! Вы победили!' : 'Орел... Вы проиграли.';
+
+    ctx.reply('Хотите сыграть еще раз?', { reply_markup: keyboard });
+});
+
 bot.start();
 console.log('Бот запущен.');
